@@ -205,7 +205,9 @@ class _WidgetZoomState extends State<WidgetZoom>
   }
 
   void _closeFullScreenImage() {
-    if (_isFullScreenImageOpened && _rootNavigator.canPop()) {
+    if (_isFullScreenImageOpened &&
+        _rootNavigator.canPop() &&
+        widget.closeFullScreenImageOnDispose) {
       _rootNavigator.pop();
     }
   }
