@@ -54,69 +54,73 @@ class _ImageZoomFullscreenState extends State<WidgetZoomFullscreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: AnimatedOpacity(
-            duration: _opacityDuration,
-            opacity: _opacity,
-            child: Container(
-              color: Colors.black,
-            ),
-          ),
-        ),
-        AnimatedPositioned(
-          duration: _animationDuration,
-          top: _imagePosition,
-          bottom: -_imagePosition,
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 200,
-            child: InteractiveViewer(
-              constrained: true,
-              transformationController: _transformationController,
-              minScale: widget.minScale,
-              maxScale: widget.maxScale,
-              onInteractionStart: _onInteractionStart,
-              onInteractionUpdate: _onInteractionUpdate,
-              onInteractionEnd: _onInteractionEnd,
-              child: GestureDetector(
-                // need to have both methods, otherwise the zoom will be triggered before the second tap releases the screen
-                onDoubleTapDown: (details) => _doubleTapDownDetails = details,
-                onDoubleTap: _zoomInOut,
-                child: Hero(
-                  tag: widget.heroAnimationTag,
-                  child: widget.zoomWidget,
-                ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => Navigator.of(context).pop(),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: AnimatedOpacity(
+              duration: _opacityDuration,
+              opacity: _opacity,
+              child: Container(
+                color: Colors.black,
               ),
             ),
           ),
-        ),
-        SafeArea(
-          child: Align(
-            alignment: Alignment.topRight,
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => Navigator.of(context).pop(),
-              child: AnimatedOpacity(
-                duration: _opacityDuration,
-                opacity: _opacity,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 5,
-                  ),
-                  child: Icon(
-                    CupertinoIcons.xmark,
-                    color: Colors.white,
-                    size: 30,
+          AnimatedPositioned(
+            duration: _animationDuration,
+            top: _imagePosition,
+            bottom: -_imagePosition,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+              child: InteractiveViewer(
+                constrained: true,
+                transformationController: _transformationController,
+                minScale: widget.minScale,
+                maxScale: widget.maxScale,
+                onInteractionStart: _onInteractionStart,
+                onInteractionUpdate: _onInteractionUpdate,
+                onInteractionEnd: _onInteractionEnd,
+                child: GestureDetector(
+                  // need to have both methods, otherwise the zoom will be triggered before the second tap releases the screen
+                  onDoubleTapDown: (details) => _doubleTapDownDetails = details,
+                  onDoubleTap: _zoomInOut,
+                  child: Hero(
+                    tag: widget.heroAnimationTag,
+                    child: widget.zoomWidget,
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+          // SafeArea(
+          //   child: Align(
+          //     alignment: Alignment.topRight,
+          //     child: GestureDetector(
+          //       behavior: HitTestBehavior.translucent,
+          //       onTap: () => Navigator.of(context).pop(),
+          //       child: AnimatedOpacity(
+          //         duration: _opacityDuration,
+          //         opacity: _opacity,
+          //         child: const Padding(
+          //           padding: EdgeInsets.symmetric(
+          //             horizontal: 10,
+          //             vertical: 5,
+          //           ),
+          //           child: Icon(
+          //             CupertinoIcons.xmark,
+          //             color: Colors.white,
+          //             size: 30,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
     );
   }
 
